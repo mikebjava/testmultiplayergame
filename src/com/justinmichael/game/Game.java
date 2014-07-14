@@ -160,6 +160,7 @@ public class Game
 				isConnected = true;
 				outputStream = new ObjectOutputStream(socket.getOutputStream());
 				outputStream.writeObject(player);
+				outputStream.flush();
 				inputStream = new ObjectInputStream(socket.getInputStream());
 				new Thread(new SocketListener()).start();
 
