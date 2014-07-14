@@ -138,6 +138,11 @@ public class Game
 		}
 
 		player.render();
+
+		for (int i = 0; i < otherPlayers.size(); i++)
+		{
+			otherPlayers.get(i).render();
+		}
 	}
 
 	private void preInit()
