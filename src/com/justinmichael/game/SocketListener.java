@@ -41,7 +41,7 @@ public class SocketListener implements Runnable
 						{
 							String[] args = str.split(":");
 							int playerID = Integer.parseInt(args[1]);
-							int newX = Integer.parseInt(args[2]);
+							float newX = Float.parseFloat(args[2]);
 
 							Game.getPlayerByID(playerID).setX(newX);
 
@@ -51,7 +51,7 @@ public class SocketListener implements Runnable
 						{
 							String[] args = str.split(":");
 							int playerID = Integer.parseInt(args[1]);
-							int newY = Integer.parseInt(args[2]);
+							float newY = Float.parseFloat(args[2]);
 
 							Game.getPlayerByID(playerID).setY(newY);
 						}
@@ -61,6 +61,7 @@ public class SocketListener implements Runnable
 			} catch (Exception e)
 			{
 				System.out.println("Unable to read data: " + e.getLocalizedMessage());
+				e.printStackTrace();
 			}
 		}
 	}
