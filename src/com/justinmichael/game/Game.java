@@ -193,7 +193,7 @@ public class Game
 	private void stop()
 	{
 		Display.destroy();
-
+		System.exit(0);
 	}
 
 	public static void main(String[] args)
