@@ -161,6 +161,8 @@ public class Game
 				outputStream = new ObjectOutputStream(socket.getOutputStream());
 				outputStream.writeObject(player);
 				inputStream = new ObjectInputStream(socket.getInputStream());
+				new Thread(new SocketListener()).start();
+
 			} catch (Exception e)
 			{
 				e.printStackTrace();
