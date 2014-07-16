@@ -17,7 +17,8 @@ public class DisconnectCommand extends AbstractCommand
 	@Override
 	public void execute()
 	{
-		Game.otherPlayers.remove(player);
+		System.out.println("Running disconnect command.");
+		Game.otherPlayers.remove(Game.getPlayerByID(player.playerID));
 	}
 
 }

@@ -212,4 +212,16 @@ public class Game
 		return null;
 	}
 
+	public static int getPlayerIndexByID(int id)
+	{
+		for (int i = 0; i < otherPlayers.size(); i++)
+		{
+			if (id == otherPlayers.get(i).playerID)
+			{
+				return i;
+			}
+		}
+		System.out.println("Unable to get player by id " + id + ".");
+		return 0;
+	}
 }
