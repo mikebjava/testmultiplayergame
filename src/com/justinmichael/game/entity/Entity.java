@@ -18,6 +18,12 @@ public class Entity implements Serializable
 		this.speed = speed;
 	}
 
+	public void setPosition(float x, float y)
+	{
+		this.setX(x);
+		this.setY(y);
+	}
+
 	public float getX()
 	{
 		return x;

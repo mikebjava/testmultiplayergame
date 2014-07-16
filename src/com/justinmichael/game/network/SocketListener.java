@@ -4,7 +4,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SocketListener implements Runnable
+import com.justinmichael.game.Game;
+import com.justinmichael.game.command.ICommand;
+import com.justinmichael.game.entity.Player;
+
+public class SocketListener implements Runnable, ISocketActionHandler
 {
 
 	private Socket socket;
@@ -23,6 +27,8 @@ public class SocketListener implements Runnable
 			this.objectInputStream = new ObjectInputStream(socket.getInputStream());
 			System.out.println("Getting outputstream...");
 			this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			System.out.println("Sending player data...");
+			objectOutputStream.writeObject(Game.player);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -45,7 +51,7 @@ public class SocketListener implements Runnable
 				Object obj = null;
 				while ((obj = objectInputStream.readObject()) != null)
 				{
-
+					this.onInput(socket, obj);
 				}
 			} catch (Exception e)
 			{
@@ -72,6 +78,29 @@ public class SocketListener implements Runnable
 	public ObjectOutputStream getObjectOutputStream()
 	{
 		return objectOutputStream;
+	}
+
+	@Override
+	public void onInput(Socket source, Object input)
+	{
+
+		if (input instanceof Player)
+		{
+			System.out.println("Data Received, type Player.");
+			Game.otherPlayers.add((Player) input);
+		}
+
+		if (input instanceof ICommand)
+		{
+			((ICommand) input).execute();
+		}
+
+	}
+
+	@Override
+	public void onOutput(Socket source, Object output)
+	{
+
 	}
 
 }

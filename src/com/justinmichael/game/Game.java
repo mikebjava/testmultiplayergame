@@ -25,6 +25,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import com.justinmichael.game.command.MoveCommand;
 import com.justinmichael.game.entity.Player;
 import com.justinmichael.game.network.SocketListener;
 
@@ -45,11 +46,10 @@ public class Game
 
 	public static Socket socket;
 	private boolean isConnected;
-	public Player player;
+	public static Player player;
 	public static ArrayList<Player> otherPlayers = new ArrayList<Player>();
 	public Random random = new Random();
-	public static ObjectOutputStream outputStream;
-	public static ObjectInputStream inputStream;
+	public static SocketListener socketListener;
 
 	public Game()
 	{
@@ -95,7 +95,7 @@ public class Game
 			player.setX(player.getX() + player.getSpeed());
 			try
 			{
-				outputStream.writeObject("playerX:" + player.playerID + ":" + player.getX());
+				socketListener.getObjectOutputStream().writeObject(new MoveCommand(player, player.getX(), player.getY()));
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -107,7 +107,7 @@ public class Game
 			player.setX(player.getX() - player.getSpeed());
 			try
 			{
-				outputStream.writeObject("playerX:" + player.playerID + ":" + player.getX());
+				socketListener.getObjectOutputStream().writeObject(new MoveCommand(player, player.getX(), player.getY()));
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -119,7 +119,7 @@ public class Game
 			player.setY(player.getY() - player.getSpeed());
 			try
 			{
-				outputStream.writeObject("playerY:" + player.playerID + ":" + player.getY());
+				socketListener.getObjectOutputStream().writeObject(new MoveCommand(player, player.getX(), player.getY()));
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -131,7 +131,7 @@ public class Game
 			player.setY(player.getY() + player.getSpeed());
 			try
 			{
-				outputStream.writeObject("playerY:" + player.playerID + ":" + player.getY());
+				socketListener.getObjectOutputStream().writeObject(new MoveCommand(player, player.getX(), player.getY()));
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -159,7 +159,8 @@ public class Game
 			{
 				socket = new Socket("10.0.0.15", 25565);
 				isConnected = true;
-				new Thread(new SocketListener(socket)).start();
+				socketListener = new SocketListener(socket);
+				new Thread(socketListener).start();
 			} catch (Exception e)
 			{
 				e.printStackTrace();
@@ -207,6 +208,7 @@ public class Game
 				return otherPlayers.get(i);
 			}
 		}
+		System.out.println("Unable to get player by id " + id + ".");
 		return null;
 	}
 
