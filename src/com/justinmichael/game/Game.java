@@ -26,6 +26,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.justinmichael.game.entity.Player;
+import com.justinmichael.game.network.SocketListener;
 
 public class Game
 {
@@ -158,12 +159,7 @@ public class Game
 			{
 				socket = new Socket("10.0.0.15", 25565);
 				isConnected = true;
-				outputStream = new ObjectOutputStream(socket.getOutputStream());
-				outputStream.writeObject(player);
-				outputStream.flush();
-				inputStream = new ObjectInputStream(socket.getInputStream());
-				new Thread(new SocketListener()).start();
-
+				new Thread(new SocketListener(socket)).start();
 			} catch (Exception e)
 			{
 				e.printStackTrace();
