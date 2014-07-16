@@ -26,6 +26,8 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.justinmichael.game.command.MoveCommand;
+import com.justinmichael.game.entity.Cuboid;
+import com.justinmichael.game.entity.Entity;
 import com.justinmichael.game.entity.Player;
 import com.justinmichael.game.network.SocketListener;
 
@@ -48,6 +50,7 @@ public class Game
 	private boolean isConnected;
 	public static Player player;
 	public static ArrayList<Player> otherPlayers = new ArrayList<Player>();
+	public static ArrayList<Entity> otherEntities = new ArrayList<Entity>();
 	public Random random = new Random();
 	public static SocketListener socketListener;
 
@@ -143,6 +146,15 @@ public class Game
 		for (int i = 0; i < otherPlayers.size(); i++)
 		{
 			otherPlayers.get(i).render();
+		}
+
+		for (int i = 0; i < otherEntities.size(); i++)
+		{
+			if (otherEntities.get(i) instanceof Cuboid)
+			{
+				((Cuboid) otherEntities.get(i)).moveToClosestPlayer();
+				((Cuboid) otherEntities.get(i)).render();
+			}
 		}
 	}
 

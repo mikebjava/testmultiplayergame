@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import com.justinmichael.game.Game;
 import com.justinmichael.game.command.ICommand;
+import com.justinmichael.game.entity.Cuboid;
 import com.justinmichael.game.entity.Player;
 
 public class SocketListener implements Runnable, ISocketActionHandler
@@ -93,6 +94,11 @@ public class SocketListener implements Runnable, ISocketActionHandler
 		if (input instanceof ICommand)
 		{
 			((ICommand) input).execute();
+		}
+
+		if (input instanceof Cuboid)
+		{
+			Game.otherEntities.add((Cuboid) input);
 		}
 
 	}
